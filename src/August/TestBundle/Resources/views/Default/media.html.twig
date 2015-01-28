@@ -17,7 +17,7 @@
     <div style="width: 45%; float: right;">
         <h3>Uploaded Files</h3>
         {% for file in files %}
-            <img src="/media/{{ file.fileName }}" width="100" />
+            <img src="{{ file | imagine_filter('my_thumb') }}" />
         {% endfor %}
     </div>
 

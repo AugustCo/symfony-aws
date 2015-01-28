@@ -75,8 +75,8 @@ swiftmailer:
     spool:     { type: memory }
 
 
-# FIX SESSIONS: Use PHP Session Handler
 services:
+
     pdo:
         class: PDO
         arguments:
@@ -89,3 +89,76 @@ services:
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments: ["@pdo"]
+
+
+
+    acme.amazon_s3:
+        class: Aws\S3\S3Client
+        factory_class: Aws\S3\S3Client
+        factory_method:  factory
+        arguments:
+            -
+                key: %amazon.s3.key%
+                secret: %amazon.s3.secret%
+                region: %amazon.s3.region%
+
+
+    august.imagine.cache.resolver.amazon_s3:
+        class: Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver
+        arguments:
+            - "@acme.amazon_s3"
+            - "%amazon.s3.bucket%"
+        tags:
+            - { name: 'liip_imagine.cache.resolver', resolver: 'media_files' }
+
+    august.imagine.binary.loader.stream.media_files:
+        class: "%liip_imagine.binary.loader.stream.class%"
+        arguments:
+            - 'gaufrette://media_files/'
+        tags:
+            - { name: 'liip_imagine.binary.loader', loader: 'stream.media_files' }
+
+
+knp_gaufrette:
+    adapters:
+        media_files:
+            aws_s3:
+                service_id: 'acme.amazon_s3'
+                bucket_name: 'symfony-aws'
+                options:
+                    directory: ''
+    filesystems:
+        media_files:
+            adapter: media_files
+    stream_wrapper: ~
+
+
+
+
+liip_imagine:
+    cache: media_files
+    data_loader: stream.media_files
+
+    loaders:
+        stream.media_files:
+            stream:
+                wrapper: gaufrette://media_files/
+
+    resolvers:
+       media_files:
+          aws_s3:
+              client_config:
+                  key:    %amazon.s3.key%
+                  secret: %amazon.s3.secret%
+                  region: %amazon.s3.region%
+              bucket:     %amazon.s3.bucket%
+              get_options:
+                  Scheme: 'https'
+              put_options:
+                  CacheControl: 'max-age=86400'
+    filter_sets:
+        cache: ~
+        my_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [50,50], mode: outbound }

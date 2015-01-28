@@ -22,3 +22,8 @@ if (isset($_SERVER['RDS_HOSTNAME'])) {
     $container->setParameter('database_path', 'test.sqlite');
 
 }
+
+$container->setParameter('amazon.s3.key', 'Your-Key');
+$container->setParameter('amazon.s3.secret', 'Your-Secret');
+$container->setParameter('amazon.s3.bucket', 'Your-Bucket');
+$container->setParameter('amazon.s3.region', 'Your-Region');

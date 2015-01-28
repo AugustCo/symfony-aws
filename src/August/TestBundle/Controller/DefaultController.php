@@ -38,6 +38,9 @@ class DefaultController extends Controller
      */
     public function mediaAction(Request $request)
     {
+        // Get the AWS S3 filesystem
+        $filesystem = $this->get('gaufrette.media_files_filesystem');
+
         // Build a form
         $defaultData = array('attachment' => '');
         $form = $this->createFormBuilder($defaultData)
@@ -59,23 +62,27 @@ class DefaultController extends Controller
 
             // Save the file
             $data = $form->getData();
-            $data['attachment']->move(
-                __DIR__.'/../../../../web/media/',
-                $data['attachment']->getClientOriginalName()
-            );
+
+            if ($filesystem->has($data['attachment']->getClientOriginalName())) {
+                $filesystem->delete($data['attachment']->getClientOriginalName());
+            }
+            $filesystem->write($data['attachment']->getClientOriginalName(), file_get_contents($data['attachment']->getPathname()));
 
             return $this->redirect('/media');
 
         }
 
-        // Lookup files to display
-        $finder = new Finder();
-        $finder->files()->in(__DIR__.'/../../../../web/media/');
+        $files = $filesystem->listKeys();
+        foreach($files as $key => $file) {
+            if (stristr($file,'/')) {
+                unset($files[$key]);
+            }
+        }
 
         return array(
             'hostname' => \gethostname(),
             'form' => $form->createView(),
-            'files' => $finder
+            'files' => $files
         );
     }
 
