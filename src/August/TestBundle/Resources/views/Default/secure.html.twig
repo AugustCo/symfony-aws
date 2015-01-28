@@ -1,0 +1,8 @@
+{%  extends "AugustTestBundle::base.html.twig" %}
+
+{% block content %}
+
+<p><b>Hostname:</b> {{ hostname }}</p>
+<p><b>Scheme:</b> {{ app.request.scheme }}</p>
+<p><b>Session ID:</b> {{ app.session.id }}</p>
+{% endblock %}

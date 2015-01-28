@@ -1,0 +1,3 @@
+august_test:
+    resource: "@AugustTestBundle/Controller/"
+    type:     annotation

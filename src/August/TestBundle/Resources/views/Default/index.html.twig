@@ -1,0 +1,24 @@
+{%  extends "AugustTestBundle::base.html.twig" %}
+
+{% block content %}
+
+    <p><b>Hostname:</b> {{ hostname }}</p>
+    <p><b>Session ID:</b> {{ app.session.id }}</p>
+    <div style="width: 45%; float: left;">
+        <h3>Current Session Contents:</h3>
+        <dl>
+            {% for key, val in app.session.all %}
+                <dt>{{ key }}</dt>
+                <dd>{{ val }}</dd>
+            {% endfor %}
+        </dl>
+    </div>
+    <form action="" method="get" style="width: 45%; float: right;">
+        <h3>Update Session:</h3>
+        <p>Field 1: <input name="field1" value="{{ app.session.get('field1') }}"  /></p>
+        <p>Field 2: <input name="field2" value="{{ app.session.get('field2') }}"  /></p>
+        <p>Field 3: <input name="field3" value="{{ app.session.get('field3') }}"  /></p>
+        <p>Field 4: <input name="field4" value="{{ app.session.get('field4') }}"  /></p>
+        <p><button>Update Session Vars</button></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{%  extends "AugustTestBundle::base.html.twig" %}
+
+{% block content %}
+
+    <p><b>Hostname:</b> {{ hostname }}</p>
+    <p><b>Scheme:</b> {{ app.request.scheme }}</p>
+    <p><b>Session ID:</b> {{ app.session.id }}</p>
+    <div style="width: 45%; float: left;">
+        <h3>Upload a PNG file</h3>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {{ form_errors(form) }}
+            {{ form_rest(form) }}
+            <p><input type="submit" value="Upload Image"/></p>
+        </form>
+    </div>
+    <div style="width: 45%; float: right;">
+        <h3>Uploaded Files</h3>
+        {% for file in files %}
+            <img src="/media/{{ file.fileName }}" width="100" />
+        {% endfor %}
+    </div>
+
+{% endblock %}

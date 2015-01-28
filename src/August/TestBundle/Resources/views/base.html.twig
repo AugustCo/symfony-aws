@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>DPS - Symfony2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <style>
+        body {
+            font-family: Lato;
+            color: #333;
+            font-size: 2em;
+        }
+        input, button {
+            font-size: 1em;
+            border-radius: 3px;
+            padding: 0.5em 0.75em;
+            border: 1px solid #ccc;
+        }
+        input[type="file"] {
+            border: 0;
+        }
+        button {
+            background: #eee;
+
+        }
+        main {
+            margin: 0 auto;
+            width: 80%;
+        }
+        small {
+            display: block;
+            font-size: 0.5em;
+        }
+        h1 {
+            padding-bottom: 0.75em;
+            margin-bottom: 0.75em;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <h1><small>DPS - Symfony2 Meetup</small> Symfony in the cloud.</h1>
+
+
+    {% block content %}{% endblock %}
+</main>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+</body>
+</html>
