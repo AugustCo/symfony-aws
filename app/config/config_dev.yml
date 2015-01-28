@@ -5,7 +5,13 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
         strict_requirements: true
-    profiler: { only_exceptions: false }
+    profiler:
+        only_exceptions: false
+        # FIX PROFILER STORAGE: Save it to the database rather than to disk
+        dsn:      "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+        username: "%database_user%"
+        password: "%database_password%"
+        lifetime: 3600
 
 web_profiler:
     toolbar: true

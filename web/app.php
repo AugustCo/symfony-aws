@@ -15,6 +15,10 @@ require_once __DIR__.'/../app/AppKernel.php';
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
 $request = Request::createFromGlobals();
+
+// Trust all requests (assuming they can only come from the load balancer with no direct access to instances)
+Request::setTrustedProxies(array($request->server->get('REMOTE_ADDR')));
+
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

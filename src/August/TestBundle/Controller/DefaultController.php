@@ -40,7 +40,7 @@ class DefaultController extends Controller
     {
         // Build a form
         $defaultData = array('attachment' => '');
-        $form = $this->createFormBuilder($defaultData, array('csrf_protection' => false))
+        $form = $this->createFormBuilder($defaultData)
             ->add('attachment', 'file', array(
                 'constraints' => array(
                     new Assert\Image(array(
